@@ -30,6 +30,12 @@
 				},
 				{
 					"name": "select1"
+				},
+				{
+					"name": "AudienceScore"
+				},
+				{
+					"name": "union1"
 				}
 			],
 			"scriptLines": [
@@ -60,7 +66,9 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1 sink(allowSchemaDrift: true,",
+				"source1 filter(toInteger({Audience score %})>=70) ~> AudienceScore",
+				"AudienceScore, select1 union(byName: true)~> union1",
+				"union1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sink1"
